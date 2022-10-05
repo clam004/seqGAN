@@ -1,5 +1,6 @@
 # seqGAN
-A PyTorch implementation of "SeqGAN: Sequence Generative Adversarial Nets with Policy Gradient." (Yu, Lantao, et al.). The code is highly simplified, commented and (hopefully) straightforward to understand. 
+A PyTorch implementation of [SeqGAN: Sequence Generative Adversarial Nets with Policy Gradient. (Yu, Lantao, et al.)](https://arxiv.org/pdf/1609.05473.pdf)
+The code is highly simplified, commented and (hopefully) straightforward to understand. 
 
 The policy gradients implemented are also much simpler than in the original work (https://github.com/LantaoYu/SeqGAN/) and do not involve rollouts
 
