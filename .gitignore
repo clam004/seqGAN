@@ -1,11 +1,6 @@
 # compiled bytecode
 *.pyc
 
-# large files
-**/data/
-**/modelstates/
-**/modelstate/
-
 # Environments
 **/*env
 **/env_*

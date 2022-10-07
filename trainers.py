@@ -43,7 +43,7 @@ def train_generator_MLE(gen, gen_opt, oracle, real_data_samples, epochs,
 
         # each loss in a batch is loss per sample
         total_loss = total_loss / ceil(POS_NEG_SAMPLES / float(BATCH_SIZE)) / MAX_SEQ_LEN
-
+        
         # sample from generator and compute oracle NLL
         oracle_loss = helpers.batchwise_oracle_nll(
             gen, 
