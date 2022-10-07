@@ -1,12 +1,4 @@
-accelerate
-datasets
-fastapi
-gunicorn
 ipywidgets
 jupyterlab
-python-dotenv
-pytz
 torch
-tqdm
 transformers
-uvicorn

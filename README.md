@@ -1,4 +1,5 @@
 # seqGAN
+
 A PyTorch implementation of [SeqGAN: Sequence Generative Adversarial Nets with Policy Gradient. (Yu, Lantao, et al.)](https://arxiv.org/pdf/1609.05473.pdf)
 The code is highly simplified, commented and (hopefully) straightforward to understand. 
 
@@ -18,7 +19,17 @@ python main.py
 ```
 main.py should be your entry point into the code.
 
+## python virtual environment
+
+```console
+you@you chat-api % python3 -m venv venv
+you@you chat-api % source venv/bin/activate
+(venv) you@you chat-api % pip install --upgrade pip
+(venv) you@you chat-api % pip install -r requirements.txt
+```
+
 ## Hacks and Observations
+
 The following hacks (borrowed from https://github.com/soumith/ganhacks) seem to have worked in this case:
 - Training Discriminator a lot more than Generator (Generator is trained only for one batch of examples, and increasing the batch size hurts stability)
 - Using Adam for Generator and Adagrad for Discriminator
@@ -29,6 +40,7 @@ The following hacks (borrowed from https://github.com/soumith/ganhacks) seem to 
 - The GAN phase may not always lead to massive drops in NLL (sometimes very minimal) - I suspect this is due to the very crude nature of the policy gradients implemented (without rollouts).
 
 ## Sample Learning Curve
+
 Learning curve obtained after MLE training for 100 epochs followed by adversarial training. (Your results may vary!)
 
 ![alt tag](https://raw.githubusercontent.com/suragnair/seqGAN/master/learning_curve.png)
