@@ -27,6 +27,7 @@ class Discriminator(nn.Module):
             return h
 
     def forward(self, input, hidden):
+        
         # input dim                                                # batch_size x seq_len
         emb = self.embeddings(input)                               # batch_size x seq_len x embedding_dim
         emb = emb.permute(1, 0, 2)                                 # seq_len x batch_size x embedding_dim
