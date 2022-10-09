@@ -89,7 +89,7 @@ def train_generator_PG(gen, gen_opt, oracle, dis, num_batches,
         gpu=CUDA,
     )
 
-    print(' oracle_sample_NLL = %.4f' % oracle_loss)
+    print('\n oracle_sample_NLL = %.4f' % oracle_loss)
 
 
 def train_discriminator(discriminator, dis_opt, real_data_samples, generator, oracle, d_steps, epochs,
@@ -108,9 +108,16 @@ def train_discriminator(discriminator, dis_opt, real_data_samples, generator, or
     val_inp, val_target = helpers.prepare_discriminator_data(pos_val, neg_val, gpu=CUDA)
 
     for d_step in range(d_steps):
+
         s = helpers.batchwise_sample(generator, POS_NEG_SAMPLES, BATCH_SIZE)
+        # experimental line
+        # print('sampling new set of sequences from generator and oracle for training')
+        real_data_samples = oracle.sample(POS_NEG_SAMPLES)
+        # # # 
         dis_inp, dis_target = helpers.prepare_discriminator_data(real_data_samples, s, gpu=CUDA)
+
         for epoch in range(epochs):
+
             print('d-step %d epoch %d : ' % (d_step + 1, epoch + 1), end='')
             sys.stdout.flush()
             total_loss = 0
@@ -128,8 +135,8 @@ def train_discriminator(discriminator, dis_opt, real_data_samples, generator, or
                 total_loss += loss.data.item()
                 total_acc += torch.sum((out>0.5)==(target>0.5)).data.item()
 
-                if (i / BATCH_SIZE) % ceil(ceil(2 * POS_NEG_SAMPLES / float(
-                        BATCH_SIZE)) / 10.) == 0:  # roughly every 10% of an epoch
+                if (i / BATCH_SIZE) % ceil(ceil(2 * POS_NEG_SAMPLES / float(BATCH_SIZE)) / 10.) == 0:  
+                    # roughly every 10% of an epoch
                     print('.', end='')
                     sys.stdout.flush()
 
@@ -137,5 +144,20 @@ def train_discriminator(discriminator, dis_opt, real_data_samples, generator, or
             total_acc /= float(2 * POS_NEG_SAMPLES)
 
             val_pred = discriminator.batchClassify(val_inp)
-            print(' average_loss = %.4f, train_acc = %.4f, val_acc = %.4f' % (
+            print('average_loss = %.4f, train_acc = %.4f, val_acc = %.4f' % (
                 total_loss, total_acc, torch.sum((val_pred>0.5)==(val_target>0.5)).data.item()/200.))
+
+
+def seed_everything(seed: int):
+    
+    import random, os
+    import numpy as np
+    import torch
+    
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = True
